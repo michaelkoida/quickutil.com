@@ -62,7 +62,6 @@
             resize: none;
             background: #f8fafc;
             margin-bottom: 20px;
-            transition: border-color 0.2s;
         }
 
         textarea:focus {
@@ -70,7 +69,7 @@
             background: #fff;
         }
 
-        /* --- STYLED INTERACTIVE WHEEL COMPONENT --- */
+        /* --- LUXURY OUT RIMS AND POSITION FRAME LAYOUTS --- */
         .wheel-outer-ring {
             position: relative;
             width: 290px;
@@ -78,22 +77,8 @@
             margin: 20px auto 35px;
             background: radial-gradient(circle, #2c3e50 0%, #0f172a 100%);
             border-radius: 50%;
-            padding: 15px; /* Heavy luxury rim */
+            padding: 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 4px 10px rgba(255,255,255,0.2);
-        }
-
-        /* Subtle glass shine layer over the wheel */
-        .wheel-outer-ring::after {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            bottom: 15px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 12;
         }
 
         .wheel-arrow {
@@ -105,7 +90,7 @@
             height: 0;
             border-left: 16px solid transparent;
             border-right: 16px solid transparent;
-            border-top: 28px solid #ff4757; /* Neon crimson pointer */
+            border-top: 28px solid #ff4757;
             z-index: 20;
             filter: drop-shadow(0 4px 5px rgba(0,0,0,0.4));
         }
@@ -115,10 +100,8 @@
             height: 100%;
             border-radius: 50%;
             background: #fff;
-            transition: transform 0.1s linear;
         }
 
-        /* The Metallic Center Cap Pin */
         .wheel-center-pin {
             position: absolute;
             top: 50%;
@@ -133,7 +116,7 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.4);
         }
 
-        /* Controls buttons */
+        /* Controls buttons elements layouts */
         .btn-controls {
             display: flex;
             gap: 12px;
@@ -150,25 +133,13 @@
             cursor: pointer;
             color: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transition: transform 0.1s, opacity 0.2s;
+            transition: transform 0.1s;
         }
 
         .btn-start { background: linear-gradient(to bottom, #10b981, #059669); }
-        .btn-start:hover { opacity: 0.9; }
-        
         .btn-stop { background: linear-gradient(to bottom, #ef4444, #dc2626); }
-        .btn-stop:hover { opacity: 0.9; }
-
-        .btn:disabled {
-            background: #cbd5e1 !important;
-            color: #94a3b8;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-        
-        .btn:active:not(:disabled) {
-            transform: scale(0.97);
-        }
+        .btn:disabled { background: #cbd5e1 !important; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
+        .btn:active:not(:disabled) { transform: scale(0.97); }
 
         .announcement-panel {
             margin-top: 25px;
@@ -186,22 +157,14 @@
             font-size: 24px;
             font-weight: 900;
             color: #10b981;
-            animation: bounceIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        @keyframes bounceIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Ad Slots CSS Styling */
         .ad-banner {
             margin: 25px 0;
             padding: 14px;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 16px;
             text-align: center;
-            backdrop-filter: blur(4px);
         }
 
         .ad-tag {
@@ -219,9 +182,6 @@
             font-size: 15px;
             line-height: 1.6;
         }
-
-        .info-card h2 { font-size: 19px; margin-bottom: 8px; color: #0f172a; }
-        .info-card p { color: #475569; margin-bottom: 12px; }
     </style>
 </head>
 <body>
@@ -233,7 +193,6 @@
             
             <textarea id="choicesInput" placeholder="Pizza, Burgers, Rice, Ice Cream, Salad, Steak"></textarea>
             
-            <!-- Upgraded Outer Ring Frame Layer -->
             <div class="wheel-outer-ring">
                 <div class="wheel-arrow"></div>
                 <div class="wheel-center-pin"></div>
@@ -250,7 +209,7 @@
             </div>
         </div>
 
-        <!-- GOOGLE ADSENSE CODE PLACEMENT BOX -->
+        <!-- GOOGLE ADSENSE TARGET HOOK DISPLAY CONTAINER -->
         <div class="ad-banner">
             <div class="ad-tag">Advertisement</div>
             <ins class="adsbygoogle"
@@ -279,24 +238,53 @@
             const output = document.getElementById('outputMessage');
             const input = document.getElementById('choicesInput');
 
-            let rotationAngle = 0;
+            let currentStartAngle = 0;
             let activeAnimationId = null;
-            let itemsList = [];
+            let itemsList = ["Spin", "To", "Pick", "A", "Random", "Choice"];
             
-            // Richer, modern gradient palette selection
             const hexColors = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#9b59b6', '#34495e', '#1abc9c', '#e67e22'];
 
-            function renderWheelGraphics(items) {
+            // This engine method redraws frames instantly via matrix rotation math logic updates
+            function renderWheelGraphics(items, globalAngleOffset = 0) {
                 const totalSlices = items.length;
                 const radiansPerSlice = (2 * Math.PI) / totalSlices;
                 
                 ctx.clearRect(0, 0, 260, 260);
 
                 for (let i = 0; i < totalSlices; i++) {
-                    const arcStart = i * radiansPerSlice;
+                    // Compute absolute target angle bounds including current global rotation offset vector values
+                    const arcStart = (i * radiansPerSlice) + globalAngleOffset;
                     const arcEnd = arcStart + radiansPerSlice;
                     
-                    // Create subtle radial gradients on each slice for 3D depth
                     const sliceGradient = ctx.createRadialGradient(130, 130, 10, 130, 130, 130);
-                    sliceGradient.addColorStop(0, '#ffffff'); // bright center glow
+                    sliceGradient.addColorStop(0, '#ffffff');
                     sliceGradient.addColorStop(0.2, hexColors[i % hexColors.length]);
+                    sliceGradient.addColorStop(1, '#111111');
+                    
+                    ctx.beginPath();
+                    ctx.fillStyle = sliceGradient;
+                    ctx.moveTo(130, 130);
+                    ctx.arc(130, 130, 130, arcStart, arcEnd);
+                    ctx.lineTo(130, 130);
+                    ctx.fill();
+                    
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+                    ctx.stroke();
+
+                    // Decorative lighting rivets
+                    ctx.save();
+                    ctx.translate(130, 130);
+                    ctx.rotate(arcStart + radiansPerSlice / 2);
+                    ctx.beginPath();
+                    ctx.arc(115, 0, 3, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fill();
+                    ctx.restore();
+
+                    // Labels text printing logic
+                    ctx.save();
+                    ctx.translate(130, 130);
+                    ctx.rotate(arcStart + radiansPerSlice / 2);
+                    
+                    ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
