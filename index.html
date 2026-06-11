@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decision Wheel - Random Spinner Tool</title>
+    <title>Premium Decision Wheel - Interactive Spinner</title>
 
-    <!-- GOOGLE ADSENSE MAIN SCRIPT CODE -->
+    <!-- GOOGLE ADSENSE CODE INTEGRATION -->
     <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
 
     <style>
-        /* standard reset */
         * {
             margin: 0;
             padding: 0;
@@ -18,139 +17,191 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            /* Beautiful vibrant gradient background */
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
             color: #333;
-            padding: 30px 15px;
+            padding: 40px 15px;
             min-height: 100vh;
         }
 
         .wrapper {
-            max-width: 600px;
+            max-width: 550px;
             margin: 0 auto;
         }
 
         .main-box {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: #ffffff;
+            padding: 35px 25px;
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
             text-align: center;
             margin-bottom: 25px;
         }
 
         h1 {
-            font-size: 26px;
-            margin-bottom: 5px;
-            color: #111;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+            margin-bottom: 6px;
         }
 
         .sub-text {
             font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
+            color: #64748b;
+            margin-bottom: 25px;
         }
 
         textarea {
             width: 100%;
-            height: 80px;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 12px;
+            height: 85px;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
             font-size: 15px;
             outline: none;
             resize: none;
-            background: #fafafa;
-            margin-bottom: 15px;
+            background: #f8fafc;
+            margin-bottom: 20px;
+            transition: border-color 0.2s;
         }
 
         textarea:focus {
-            border-color: #667eea;
+            border-color: #3b82f6;
+            background: #fff;
         }
 
-        /* --- THE SPINNING WHEEL SYSTEM --- */
-        .wheel-container {
+        /* --- STYLED INTERACTIVE WHEEL COMPONENT --- */
+        .wheel-outer-ring {
             position: relative;
-            width: 260px;
-            height: 260px;
-            margin: 20px auto;
+            width: 290px;
+            height: 290px;
+            margin: 20px auto 35px;
+            background: radial-gradient(circle, #2c3e50 0%, #0f172a 100%);
+            border-radius: 50%;
+            padding: 15px; /* Heavy luxury rim */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 4px 10px rgba(255,255,255,0.2);
         }
 
-        /* The Arrow Indicator */
+        /* Subtle glass shine layer over the wheel */
+        .wheel-outer-ring::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 12;
+        }
+
         .wheel-arrow {
             position: absolute;
-            top: -15px;
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 25px solid #ff4757; /* bright red pointer */
-            z-index: 10;
+            border-left: 16px solid transparent;
+            border-right: 16px solid transparent;
+            border-top: 28px solid #ff4757; /* Neon crimson pointer */
+            z-index: 20;
+            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.4));
         }
 
-        /* The actual canvas canvas wheel */
         .canvas-wheel {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 5px solid #333;
             background: #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: transform 0.1s linear; /* smooth fluid movement loop */
+            transition: transform 0.1s linear;
         }
 
-        /* Action Controls Layout */
+        /* The Metallic Center Cap Pin */
+        .wheel-center-pin {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 38px;
+            height: 38px;
+            background: radial-gradient(circle, #ffffff 0%, #cbd5e1 40%, #475569 100%);
+            border: 4px solid #1e293b;
+            border-radius: 50%;
+            z-index: 15;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+        }
+
+        /* Controls buttons */
         .btn-controls {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 12px;
+            margin-top: 20px;
         }
 
         .btn {
             flex: 1;
-            padding: 14px;
+            padding: 16px;
             border: none;
             border-radius: 50px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
             color: white;
-            transition: transform 0.1s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: transform 0.1s, opacity 0.2s;
         }
 
-        .btn-start { background: #2ed573; }
-        .btn-stop { background: #ff4757; }
-        .btn:active { transform: scale(0.97); }
+        .btn-start { background: linear-gradient(to bottom, #10b981, #059669); }
+        .btn-start:hover { opacity: 0.9; }
+        
+        .btn-stop { background: linear-gradient(to bottom, #ef4444, #dc2626); }
+        .btn-stop:hover { opacity: 0.9; }
 
-        /* The Winner Answer Announcement Display Box */
+        .btn:disabled {
+            background: #cbd5e1 !important;
+            color: #94a3b8;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.97);
+        }
+
         .announcement-panel {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f1f2f6;
-            border-radius: 12px;
-            min-height: 60px;
+            margin-top: 25px;
+            padding: 16px;
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 16px;
+            min-height: 65px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .winner-display {
-            font-size: 22px;
-            font-weight: 800;
-            color: #2ed573;
-            text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+            font-size: 24px;
+            font-weight: 900;
+            color: #10b981;
+            animation: bounceIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* --- ADSENSE BLOCK AREA --- */
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Ad Slots CSS Styling */
         .ad-banner {
             margin: 25px 0;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
             text-align: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(4px);
         }
 
         .ad-tag {
@@ -161,32 +212,31 @@
             margin-bottom: 6px;
         }
 
-        /* SEO Compliance Text box */
         .info-card {
             background: #fff;
-            padding: 25px;
-            border-radius: 16px;
+            padding: 30px;
+            border-radius: 20px;
             font-size: 15px;
             line-height: 1.6;
         }
 
-        .info-card h2 { font-size: 18px; margin-bottom: 8px; }
-        .info-card p { color: #555; margin-bottom: 10px; }
+        .info-card h2 { font-size: 19px; margin-bottom: 8px; color: #0f172a; }
+        .info-card p { color: #475569; margin-bottom: 12px; }
     </style>
 </head>
 <body>
 
     <div class="wrapper">
-        
         <div class="main-box">
-            <h1>Dynamic Decision Wheel</h1>
-            <p class="sub-text">Type your options separated by commas, hit spin, then press stop!</p>
+            <h1>Premium Decision Wheel</h1>
+            <p class="sub-text">Type your choices split by commas, click spin, then stop it!</p>
             
-            <textarea id="choicesInput" placeholder="Burger, Pizza, Shawarma, Rice, Salad"></textarea>
+            <textarea id="choicesInput" placeholder="Pizza, Burgers, Rice, Ice Cream, Salad, Steak"></textarea>
             
-            <!-- Wheel UI graphics structure -->
-            <div class="wheel-container">
+            <!-- Upgraded Outer Ring Frame Layer -->
+            <div class="wheel-outer-ring">
                 <div class="wheel-arrow"></div>
+                <div class="wheel-center-pin"></div>
                 <canvas id="wheelCanvas" class="canvas-wheel" width="260" height="260"></canvas>
             </div>
 
@@ -196,14 +246,13 @@
             </div>
 
             <div class="announcement-panel">
-                <div id="outputMessage" style="color: #777;">The wheel will choose your fate...</div>
+                <div id="outputMessage" style="color: #64748b; font-weight: 500;">Click spin to make a random choice...</div>
             </div>
         </div>
 
-        <!-- ADSENSE DISPLAY BANNER TARGET CONTAINER -->
+        <!-- GOOGLE ADSENSE CODE PLACEMENT BOX -->
         <div class="ad-banner">
             <div class="ad-tag">Advertisement</div>
-            
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-1234567890"
@@ -215,88 +264,39 @@
             </script>
         </div>
 
-        <!-- SEO content barrier for easy account verification approval -->
         <div class="info-card">
             <h2>About the Interactive Spinner Tool</h2>
             <p>Our completely custom web spinner utility uses canvas graphics processing layers to render dynamic choice segments directly inside your browser view frame layout environment.</p>
-            <p>Perfect for dividing tasks, running giveaway draws, or breaking free from regular routine blockages without bias tracking scripts.</p>
         </div>
-
     </div>
 
     <script>
-        // DOM object reference handles
-        const canvas = document.getElementById('wheelCanvas');
-        const ctx = canvas.getContext('2d');
-        const startBtn = document.getElementById('startBtn');
-        const stopBtn = document.getElementById('stopBtn');
-        const output = document.getElementById('outputMessage');
-        const input = document.getElementById('choicesInput');
+        window.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('wheelCanvas');
+            const ctx = canvas.getContext('2d');
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const output = document.getElementById('outputMessage');
+            const input = document.getElementById('choicesInput');
 
-        let currentAngle = 0;
-        let animationId = null;
-        let itemsList = [];
-        const sliceColors = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#9b59b6', '#34495e', '#1abc9c', '#e67e22'];
-
-        // Core custom drawing method mapping out pie segments
-        function drawTheWheel(items) {
-            const numSegments = items.length;
-            const segmentArc = (2 * Math.PI) / numSegments;
-            ctx.clearRect(0, 0, 260, 260);
-
-            for (let i = 0; i < numSegments; i++) {
-                const angleStart = i * segmentArc;
-                const angleEnd = angleStart + segmentArc;
-                
-                ctx.beginPath();
-                ctx.fillStyle = sliceColors[i % sliceColors.length];
-                ctx.moveTo(130, 130);
-                ctx.arc(130, 130, 125, angleStart, angleEnd);
-                ctx.lineTo(130, 130);
-                ctx.fill();
-                ctx.stroke();
-
-                // Draw Text labels over segments elegantly
-                ctx.save();
-                ctx.translate(130, 130);
-                ctx.rotate(angleStart + segmentArc / 2);
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 12px sans-serif';
-                ctx.textAlign = 'right';
-                
-                // Crop length strings so they look perfect on short radii paths
-                let nameStr = items[i];
-                if(nameStr.length > 8) nameStr = nameStr.substring(0,7) + '..';
-                
-                ctx.fillText(nameStr, 110, 5);
-                ctx.restore();
-            }
-        }
-
-        // Initialize setup view natively
-        drawTheWheel(["Type", "Your", "Options", "Above"]);
-
-        // Processing continuous loop operation logic
-        function spinEngine() {
-            currentAngle += 25; // Speed rate of regular rotation loops
-            canvas.style.transform = `rotate(${currentAngle}deg)`;
-            animationId = requestAnimationFrame(spinEngine);
-        }
-
-        startBtn.addEventListener('click', function() {
-            // Clean dynamic array block parsing
-            itemsList = input.value.split(',')
-                                  .map(str => str.trim())
-                                  .filter(str => str.length > 0);
-
-            if (itemsList.length < 2) {
-                output.innerHTML = '<span style="color:#ff4757;">Enter at least 2 items separated by a comma.</span>';
-                return;
-            }
-
-            output.innerText = "Spinnin' around...";
-            drawTheWheel(itemsList);
+            let rotationAngle = 0;
+            let activeAnimationId = null;
+            let itemsList = [];
             
-            startBtn.disabled = true;
-            stopBtn.disabled = false;
-            
+            // Richer, modern gradient palette selection
+            const hexColors = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#9b59b6', '#34495e', '#1abc9c', '#e67e22'];
+
+            function renderWheelGraphics(items) {
+                const totalSlices = items.length;
+                const radiansPerSlice = (2 * Math.PI) / totalSlices;
+                
+                ctx.clearRect(0, 0, 260, 260);
+
+                for (let i = 0; i < totalSlices; i++) {
+                    const arcStart = i * radiansPerSlice;
+                    const arcEnd = arcStart + radiansPerSlice;
+                    
+                    // Create subtle radial gradients on each slice for 3D depth
+                    const sliceGradient = ctx.createRadialGradient(130, 130, 10, 130, 130, 130);
+                    sliceGradient.addColorStop(0, '#ffffff'); // bright center glow
+                    sliceGradient.addColorStop(0.2, hexColors[i % hexColors.length]);
