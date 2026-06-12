@@ -1,0 +1,188 @@
+/* Custom resets & dark metallic background */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    color: #333;
+    padding: 40px 15px;
+    min-height: 100vh;
+}
+
+.wrapper {
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.main-box {
+    background: #ffffff;
+    padding: 35px 25px;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+.sub-text {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 25px;
+}
+
+textarea {
+    width: 100%;
+    height: 85px;
+    padding: 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    font-size: 15px;
+    outline: none;
+    resize: none;
+    background: #f8fafc;
+    margin-bottom: 20px;
+}
+
+textarea:focus {
+    border-color: #3b82f6;
+    background: #fff;
+}
+
+/* --- WHEEL MECHANICAL RIMS --- */
+.wheel-outer-ring {
+    position: relative;
+    width: 290px;
+    height: 290px;
+    margin: 20px auto 35px;
+    background: radial-gradient(circle, #2c3e50 0%, #0f172a 100%);
+    border-radius: 50%;
+    padding: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 4px 10px rgba(255,255,255,0.2);
+}
+
+.wheel-outer-ring::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 12;
+}
+
+.wheel-arrow {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 28px solid #ff4757;
+    z-index: 20;
+    filter: drop-shadow(0 4px 5px rgba(0,0,0,0.4));
+}
+
+.canvas-wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.wheel-center-pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 38px;
+    height: 38px;
+    background: radial-gradient(circle, #ffffff 0%, #cbd5e1 40%, #475569 100%);
+    border: 4px solid #1e293b;
+    border-radius: 50%;
+    z-index: 15;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+
+/* Control buttons adjustments */
+.btn-controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn {
+    flex: 1;
+    padding: 16px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.1s;
+}
+
+.btn-start { background: linear-gradient(to bottom, #10b981, #059669); }
+.btn-stop { background: linear-gradient(to bottom, #ef4444, #dc2626); }
+.btn:disabled { background: #cbd5e1 !important; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
+.btn:active:not(:disabled) { transform: scale(0.97); }
+
+.announcement-panel {
+    margin-top: 25px;
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 16px;
+    min-height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.winner-display {
+    font-size: 24px;
+    font-weight: 900;
+    color: #10b981;
+}
+
+/* Google monetization frame wrappers */
+.ad-banner {
+    margin: 25px 0;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    text-align: center;
+}
+
+.ad-tag {
+    font-size: 11px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.info-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    font-size: 15px;
+    line-height: 1.6;
+}

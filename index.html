@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Decision Wheel - Interactive Spinner</title>
+
+    <!-- GOOGLE ADSENSE CODE INTEGRATION -->
+    <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
+
+    <!-- Link to external human-styled CSS sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="main-box">
+            <h1>Premium Decision Wheel</h1>
+            <p class="sub-text">Type your choices split by commas, click spin, then stop it!</p>
+            
+            <textarea id="choicesInput" placeholder="Pizza, Burgers, Rice, Ice Cream, Salad, Steak"></textarea>
+            
+            <!-- Wheel Layout Layer -->
+            <div class="wheel-outer-ring">
+                <div class="wheel-arrow"></div>
+                <div class="wheel-center-pin"></div>
+                <canvas id="wheelCanvas" class="canvas-wheel" width="260" height="260"></canvas>
+            </div>
+
+            <div class="btn-controls">
+                <button id="startBtn" class="btn btn-start">Spin Wheel</button>
+                <button id="stopBtn" class="btn btn-stop" disabled>STOP</button>
+            </div>
+
+            <div class="announcement-panel">
+                <div id="outputMessage" style="color: #64748b; font-weight: 500;">Click spin to make a random choice...</div>
+            </div>
+        </div>
+
+        <!-- ADSENSE DISPLAY BANNER TARGET CONTAINER -->
+        <div class="ad-banner">
+            <div class="ad-tag">Advertisement</div>
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-1234567890"
+                 data-ad-slot="9876543210"
+                 data-ad-format="auto"
+                 full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Compliance Text Box -->
+        <div class="info-card">
+            <h2>About the Interactive Spinner Tool</h2>
+            <p>Our completely custom web spinner utility uses canvas graphics processing layers to render dynamic choice segments directly inside your browser view frame layout environment.</p>
+        </div>
+    </div>
+
+    <!-- Link to external functional JavaScript engine -->
+    <script src="script.js"></script>
+</body>
+</html>
