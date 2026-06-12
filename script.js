@@ -11,9 +11,16 @@ window.addEventListener('DOMContentLoaded', () => {
     let activeAnimationId = null;
     let itemsList = ["Spin", "To", "Pick", "A", "Random", "Choice"];
     
+    // Physics control variables for lottery-style slowdown
+    let currentVelocity = 0;
+    let isStopping = false;
+    let stopTimeStart = 0;
+    const slowdownDuration = 3500; // Exact time target: 3.5 seconds in milliseconds
+    let initialStopVelocity = 0;
+
     const hexColors = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#9b59b6', '#34495e', '#1abc9c', '#e67e22'];
 
-    // Paint routine draws slices natively using offset tracking markers
+    // Paint routine draws slices natively
     function renderWheelGraphics(items, globalAngleOffset = 0) {
         const totalSlices = items.length;
         const radiansPerSlice = (2 * Math.PI) / totalSlices;
@@ -73,14 +80,53 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Paint initial graphics layout placeholder
+    // Paint initial placeholder graph layout
     renderWheelGraphics(itemsList, 0);
 
-    // Frame rendering execution loop
-    function spinRotationLoop() {
-        currentStartAngle += 0.45; 
+    // Frame rendering execution loop with smooth dynamic physics engine built-in
+    function spinRotationLoop(timestamp) {
+        if (isStopping) {
+            if (!stopTimeStart) stopTimeStart = timestamp;
+            const elapsed = timestamp - stopTimeStart;
+
+            if (elapsed >= slowdownDuration) {
+                // Time window complete! Freeze movement loop entirely
+                currentVelocity = 0;
+                cancelAnimationFrame(activeAnimationId);
+                declareWinner();
+                return;
+            }
+
+            // Cubic easing out math - standard developer approach to smoothly decelerate to 0
+            const progress = elapsed / slowdownDuration;
+            const remainingMultiplier = 1 - progress;
+            // cubic curve deceleration drop
+            currentVelocity = initialStopVelocity * (remainingMultiplier * remainingMultiplier * remainingMultiplier);
+        }
+
+        currentStartAngle += currentVelocity; 
         renderWheelGraphics(itemsList, currentStartAngle);
         activeAnimationId = requestAnimationFrame(spinRotationLoop);
+    }
+
+    // Declares the winning piece after stopping
+    function declareWinner() {
+        startBtn.disabled = false;
+        
+        const totalSlices = itemsList.length;
+        const radiansPerSlice = (2 * Math.PI) / totalSlices;
+
+        let netAngleOffset = currentStartAngle % (2 * Math.PI);
+        if (netAngleOffset < 0) netAngleOffset += (2 * Math.PI);
+
+        const pointReferenceAngle = (1.5 * Math.PI);
+        let winningTargetAngle = (pointReferenceAngle - netAngleOffset) % (2 * Math.PI);
+        if (winningTargetAngle < 0) winningTargetAngle += (2 * Math.PI);
+
+        const finalWinningIndex = Math.floor(winningTargetAngle / radiansPerSlice) % totalSlices;
+        const chosenWinner = itemsList[finalWinningIndex];
+
+        output.innerHTML = `<span class="winner-display">🎉 Choice: ${chosenWinner}</span>`;
     }
 
     startBtn.addEventListener('click', function() {
@@ -96,30 +142,24 @@ window.addEventListener('DOMContentLoaded', () => {
         itemsList = freshInputs;
         output.innerText = "The wheel is spinning...";
         
+        // Reset state metrics
+        isStopping = false;
+        stopTimeStart = 0;
+        currentVelocity = 0.45; // baseline full rotation speed run index
+        
         startBtn.disabled = true;
         stopBtn.disabled = false;
-        spinRotationLoop();
+        
+        // Pass timestamp handle right into engine loop
+        activeAnimationId = requestAnimationFrame(spinRotationLoop);
     });
 
     stopBtn.addEventListener('click', function() {
-        cancelAnimationFrame(activeAnimationId);
-        
         stopBtn.disabled = true;
-        startBtn.disabled = false;
-
-        const totalSlices = itemsList.length;
-        const radiansPerSlice = (2 * Math.PI) / totalSlices;
-
-        let netAngleOffset = currentStartAngle % (2 * Math.PI);
-        if (netAngleOffset < 0) netAngleOffset += (2 * Math.PI);
-
-        const pointReferenceAngle = (1.5 * Math.PI);
-        let winningTargetAngle = (pointReferenceAngle - netAngleOffset) % (2 * Math.PI);
-        if (winningTargetAngle < 0) winningTargetAngle += (2 * Math.PI);
-
-        const finalWinningIndex = Math.floor(winningTargetAngle / radiansPerSlice) % totalSlices;
-        const chosenWinner = itemsList[finalWinningIndex];
-
-        output.innerHTML = `<span class="winner-display">🎉 Choice: ${chosenWinner}</span>`;
+        output.innerText = "Slowing down smoothly...";
+        
+        // Lock initial current speed and initialize time flags for gradual easing
+        initialStopVelocity = currentVelocity;
+        isStopping = true;
     });
 });
